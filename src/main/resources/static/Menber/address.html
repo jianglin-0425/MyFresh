@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://mp-ttsx-python.itheima.net/user/address -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>天天生鲜-用户中心</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+
+<div id="app">
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+                
+				<div class="login_btn fl">
+					欢迎您：<em>{{user.nickname}}</em>
+                    <span>|</span>
+					<a href="" @click="loginOut">退出</a>
+				</div>
+                
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="address.html">用户中心</a>
+					<span>|</span>
+					<a href="../cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="allOrder.html">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+
+
+
+	<div class="search_bar clearfix">
+		<a href="../index.html" class="logo fl"><img src="../images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+	</div>
+
+
+
+
+    <div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="userinfomation.html">· 个人信息</a></li>
+				<li><a href="allOrder.html">· 全部订单</a></li>
+				<li><a href="address.html" class="active">· 收货地址</a></li>
+			</ul>
+		</div>
+        
+        
+		<div class="right_content clearfix">
+				<h3 class="common_title2">收货地址</h3>
+
+				<div class="site_con">
+					<dl>
+						<dt style="color: #3d96c9">默认地址：</dt>
+                        
+                            <dd v-if="defaultAddress!=null">
+								<span><B>收件人:</B> {{defaultAddress.name}}</span>
+								<span><B>邮编:</B> 200111</span>
+								<span><B>手机:</B> 110</span>
+								<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><B>详细地址:</B> {{defaultAddress.addr}}</span>
+								<span ><a href="#edit_address" style="color: #3d96c9" @click="edit(defaultAddress)">编辑地址</a></span>
+								<span ><a href="javascript:void(0)" style="color: #ff0000 ">删除</a></span>
+							</dd>
+							<dd>
+								暂未设置默认地址
+							</dd>
+
+                    </dl>
+				</div>
+				<div class="site_con">
+					<dl>
+						<dt style="color: #3d96c9">其他地址：</dt>
+
+						<dd v-for="a in addrs" v-if="a.flag!=1">
+							<span><B>收件人:</B> {{a.name}}</span>
+							<span><B>邮编:</B> 200111</span>
+							<span><B>手机:</B> {{a.tel}}</span>
+							<br/>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><B>详细地址:</B> {{a.addr}}</span>
+							<span ><a href="#edit_address" style="color: #3d96c9" @click="edit(a)">编辑地址</a></span>
+							<span ><a href="javascript:void(0)" style="color: #3d96c9" @click="setDefault(a)">设为默认</a></span>
+							<span ><a href="javascript:void(0)" style="color: red " @click="deleteAddress(a)">删除</a></span>
+							<hr/>
+						</dd>
+
+
+
+					</dl>
+				</div>
+
+				<h3 class="common_title2">编辑地址</h3>
+				<div class="site_con" id="edit_address">
+					<form method="post">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="0ROVsXcJx7rlWFIOT97vcVmQ191Ma5oT">
+						<div class="form_group">
+							<label>收件人：</label>
+							<input type="text" id="receiver" name="receiver">
+						</div>
+						<div class="form_group form_group2">
+							<label>详细地址：</label>
+							<textarea class="site_area" id="addr" name="addr"></textarea>
+						</div>
+						<div class="form_group">
+							<label>邮编：</label>
+							<input type="text" id="zip_code" name="zip_code">
+						</div>
+						<div class="form_group">
+							<label>手机：</label>
+							<input type="text" id="phone" name="phone">
+						</div>
+                        <input type="hidden" id="addr_id" name="addr_id" value="0">
+                        <input type="hidden" id="type" name="type" value="change">
+						<input type="button" id="submit_btn" value="添加" @click="submitAddress()" class="info_submit">
+					</form>
+				</div>
+		</div>
+
+    </div>
+</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="http://mp-ttsx-python.itheima.net/user/address#">关于我们</a>
+			<span>|</span>
+			<a href="http://mp-ttsx-python.itheima.net/user/address#">联系我们</a>
+			<span>|</span>
+			<a href="http://mp-ttsx-python.itheima.net/user/address#">招聘人才</a>
+			<span>|</span>
+			<a href="http://mp-ttsx-python.itheima.net/user/address#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：110号</p>
+	</div>
+	</body>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript"src="../js/vue.js"></script>
+<script type="text/javascript" src="../js/axios.js"></script>
+<script type="text/javascript">
+
+	var vm=new Vue({
+		el:'#app',
+		data:{
+			user:{},
+			addrs:{},
+			defaultAddress:{},
+			addrno:''
+		},
+		methods:{
+			edit:function (data) {
+				$("#receiver").val(data.name);
+				$("#addr").val(data.addr);
+				$("#zip_code").val(data.zipcode);
+				$("#phone").val(data.tel);
+				this.addrno=data.ano;
+				$("#submit_btn").val("提交");
+			},
+			loginOut:function(){
+				axios({
+					url:'menber/loginOut',
+					method:'post',
+				}).then(result=>{
+					alert("退出成功");
+					window.location.href="login.html"
+				})
+			},
+			submitAddress:function () {
+				console.log(this.addrno=="");
+				rname=$("#receiver").val();
+				addr=$("#addr").val();
+				zipcode=$("#zip_code").val();
+				tel=$("#phone").val();
+				console.log(rname+"-"+addr+"-"+zipcode+"-"+tel+"ddd-"+this.addrno+"-ddd");
+
+				if (this.addrno==""){//添加
+					//方送ajax请求
+					axios({
+						url:'../address/insertAddr',
+						method:'get',
+						params:{name:rname,tel:tel,zipcode:zipcode,addr:addr}
+					}).then(result=>{
+						if(result.data.code==1){
+							alert('添加成功');
+							window.location.href="address.html";
+						}else{
+							alert('添加失败');
+						}
+					});
+				}else{ //修改地址
+					//方送ajax请求
+					axios({
+						url:'../address/updateAddrinfo',
+						method:'get',
+						params:{ano:this.addrno,name:rname,tel:tel,zipcode:zipcode,addr:addr}
+					}).then(result=>{
+						if(result.data.code==1){
+							alert('添加成功');
+							window.location.href="address.html";
+						}else{
+							alert('添加失败');
+						}
+					})
+				}
+			},
+			setDefault:function(data){
+
+				//方送ajax请求
+				axios({
+					url:'../address/setDefault',
+					method:'get',
+					params:{ano:data.ano}
+				}).then(result=>{
+					if(result.data.code==1){
+						alert('设置成功');
+						window.location.href="address.html";
+					}else{
+						alert('设置失败');
+					}
+				});
+			},
+			deleteAddress:function(data){
+
+				//方送ajax请求
+				axios({
+					url:'../address/deleteAddr',
+					method:'get',
+					params:{ano:data.ano}
+				}).then(result=>{
+					if(result.data.code==1){
+						alert('删除成功');
+						window.location.href="address.html";
+					}else{
+						alert('删除失败');
+					}
+				});
+			}
+		},
+		mounted:function(){
+			axios.all([getAddr(),checkLogin(),getAllAddr()])
+					.then(axios.spread((fn1,fn2,fn3)=>{
+						if (!fn2.data.code){
+							window.location.href="../login.html"
+						}
+						this.user=fn2.data.obj.menber;
+						this.defaultAddress=fn1.data.obj.addrinfo[0];
+						this.addrs=fn3.data.obj
+						console.log(this.user);
+						console.log(this.defaultAddress);
+						console.log(this.addrs);
+					}));
+		}
+	});
+	function checkLogin(){
+		return axios.get('../menber/check');
+	}
+	function getAddr(){
+		return axios({
+			url:'../address/findAddr',
+			method:'get',
+			params:{}
+		});
+	}
+	function getAllAddr(){
+		return axios({
+			url:'../address/getAllAddr',
+			method:'get',
+			params:{}
+		});
+	}
+</script>
+</html>

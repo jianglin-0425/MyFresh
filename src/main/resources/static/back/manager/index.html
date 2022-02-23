@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" type="text/css" href="../css/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="../css/icon.css" />
+<link rel="stylesheet" type="text/css" href="../css/index.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'north'" style="height:83px">
+    	<div class="header">
+        	<p>天天生鲜后台管理</p>
+            <ul>
+            	<li><a class="easyui-linkbutton" href="javascript:void(0)" data-options="plain:true,iconCls:'icon-edit'">修改密码</a></li>
+                <li><a class="easyui-linkbutton" href="javascript:void(0)" data-options="plain:true,iconCls:'icon-back'">安全退出</a></li>
+            </ul>
+        </div>
+    </div>
+    <div data-options="region:'south'" style="height:50px">
+    	<p>衡阳J2EE</p>
+    </div>
+    <!--菜单管理-->
+    <div data-options="region:'west'" title="菜单管理" style="width:200px;">
+    	<div id="menu" class="easyui-accordion" data-options="fit:true,border:false">
+            <div title="商品管理" data-options="iconCls:'icon-ok'">
+ 				<li><a class="easyui-linkbutton btn" href="addGood.html" data-options="plain:true,fit:true">添加商品信息</a></li>
+            	<li><a class="easyui-linkbutton btn" href="findGood.html" data-options="plain:true,fit:true">浏览商品信息</a></li>
+            </div>
+            <div title="订单管理" data-options="iconCls:'icon-order',selected:true">
+ 				<li><a class="easyui-linkbutton btn" href="findOrder.html" data-options="plain:true,fit:true">浏览订单信息</a></li>
+            </div>
+            <div title="会员管理" data-options="iconCls:'icon-order',selected:true">
+ 				<li><a class="easyui-linkbutton btn" href="findMember.html" data-options="plain:true,fit:true">浏览会员信息</a></li>
+            </div>            
+             <div title="管理员管理" data-options="iconCls:'icon-order',selected:true">
+ 				<li><a class="easyui-linkbutton btn" href="findAdmin.html" data-options="plain:true,fit:true">浏览管理员信息</a></li>
+            </div> 
+        </div>
+        
+    </div>
+    <div data-options="region:'center'" >
+    	<div id="show_center" class="easyui-tabs" data-options="fit:true"></div>
+    </div>
+    <script type="text/javascript">
+    	$(function(){
+
+        	$('#show_center').tabs('add',{
+        		title:'天天生鲜',
+        		href:'welcom.html',
+        		fit:true,
+        		tools:[
+        		       {
+        		    	   iconCls:'icon-mini-refresh',
+        		    	   handler:function(){alert(12);}
+        		       }]
+        	});
+    	});
+    	
+    	/*$('#menu .btn').click(function(){
+			var href=$(this).attr("href");
+			var name=$(this).text();
+			alert(href+"---"+name);
+			$('#show_center').panel('refresh',href);
+			return false;
+		});*/
+		$("#menu .btn").click(function(){
+			var href=$(this).attr('href');
+			var name=$(this).text();
+			if($('#show_center').tabs('exists',name)){
+				$("#show_center").tabs('select',name);
+			}else{
+				$('#show_center').tabs("add",{
+					title:name,
+					href:href,	
+					fit:true,
+					tools:[
+						{
+							iconCls:'icon-clear',
+							handler:function(){
+								$('#show_center').tabs('close',name);
+							}
+						}
+					]
+				})	
+			}
+			return false;
+		});
+    </script>
+</body>
+</html>

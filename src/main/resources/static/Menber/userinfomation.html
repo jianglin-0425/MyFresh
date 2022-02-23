@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0039)http://mp-ttsx-python.itheima.net/user/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+	<title>天天生鲜-用户中心</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+
+</head>
+<body>
+
+	<div id="app">
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+
+				<div class="login_btn fl">
+					欢迎您：<em>{{user.nickname}}</em>
+					<span>|</span>
+					<a href="" @click="loginOut">退出</a>
+				</div>
+
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="userinfomation.html">用户中心</a>
+					<span>|</span>
+					<a href="../cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="allOrder.html">我的订单</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="search_bar clearfix">
+		<a href="../index.html" class="logo fl"><img src="../images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+		<div class="search_con fr">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+	</div>
+
+
+
+
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="userinfomation.html" class="active">· 个人信息</a></li>
+				<li><a href="allOrder.html">· 全部订单</a></li>
+				<li><a href="address.html">· 收货地址</a></li>
+			</ul>
+		</div>
+
+
+		<div class="right_content clearfix">
+			<div class="info_con clearfix">
+				<h3 class="common_title2">基本信息</h3>
+				<ul class="user_info_list" v-if="addr==null">
+					<li><span>用户名：</span>{{user.nickname}}</li>
+
+					<li><span>联系方式：</span>无默认&nbsp; <b><a href="address.html" style="color: #3d96c9">去设置</a></b></li>
+					<li><span>联系地址：</span>无默认&nbsp; <b><a href="address.html" style="color: #3d96c9">去设置</a></b></li>
+				</ul>
+				<ul class="user_info_list" v-else>
+					<li><span>用户名：</span>{{user.nickname}}</li>
+
+					<li><span>联系方式：</span>{{addr.tel}}</li>
+					<li><span>联系地址：</span>{{addr.addr}}</li>
+				</ul>
+			</div>
+			<!--
+			<h3 class="common_title2">最近浏览</h3>
+			<div class="has_view_list">
+				<ul class="goods_type_list clearfix">
+
+					<li>
+						<a href="http://mp-ttsx-python.itheima.net/goods/9"><img src="./天天生鲜-用户中心_files/rBAAlV5GjFqADj0hAAAk0DN4-yE7103752"></a>
+						<h4><a href="http://mp-ttsx-python.itheima.net/goods/9">基围虾</a></h4>
+						<div class="operate">
+							<span class="prize">￥100.90</span>
+							<span class="unit">100.90/500g</span>
+							<a href="http://mp-ttsx-python.itheima.net/user/#" class="add_goods" title="加入购物车"></a>
+						</div>
+					</li>
+
+					<li>
+						<a href="http://mp-ttsx-python.itheima.net/goods/5"><img src="./天天生鲜-用户中心_files/rBAAlV5GjAaAQNhcAAAeuLYy0pU0322142"></a>
+						<h4><a href="http://mp-ttsx-python.itheima.net/goods/5">奇异果</a></h4>
+						<div class="operate">
+							<span class="prize">￥12.12</span>
+							<span class="unit">12.12/500g</span>
+							<a href="http://mp-ttsx-python.itheima.net/user/#" class="add_goods" title="加入购物车"></a>
+						</div>
+					</li>
+
+					<li>
+						<a href="http://mp-ttsx-python.itheima.net/goods/1"><img src="./天天生鲜-用户中心_files/rBAAlV5Gi7WAQoP6AAAljHPuXJg3314580"></a>
+						<h4><a href="http://mp-ttsx-python.itheima.net/goods/1">草莓 500g</a></h4>
+						<div class="operate">
+							<span class="prize">￥10.00</span>
+							<span class="unit">10.00/500g</span>
+							<a href="http://mp-ttsx-python.itheima.net/user/#" class="add_goods" title="加入购物车"></a>
+						</div>
+					</li>
+
+					<li>
+						<a href="http://mp-ttsx-python.itheima.net/goods/17"><img src="./天天生鲜-用户中心_files/rBAAlV5GmAWANCtEAABKcPkh3W00947067"></a>
+						<h4><a href="http://mp-ttsx-python.itheima.net/goods/17">鸡腿</a></h4>
+						<div class="operate">
+							<span class="prize">￥45.00</span>
+							<span class="unit">45.00/500g</span>
+							<a href="http://mp-ttsx-python.itheima.net/user/#" class="add_goods" title="加入购物车"></a>
+						</div>
+					</li>
+
+					<li>
+						<a href="http://mp-ttsx-python.itheima.net/goods/26"><img src="./天天生鲜-用户中心_files/rBAAlV5Gm7GAUGsbAAHakCy-SZU6963247"></a>
+						<h4><a href="http://mp-ttsx-python.itheima.net/goods/26">越南芒果</a></h4>
+						<div class="operate">
+							<span class="prize">￥29.90</span>
+							<span class="unit">29.90/2.5kg</span>
+							<a href="http://mp-ttsx-python.itheima.net/user/#" class="add_goods" title="加入购物车"></a>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+			-->
+		</div>
+
+	</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="http://mp-ttsx-python.itheima.net/user/#">关于我们</a>
+			<span>|</span>
+			<a href="http://mp-ttsx-python.itheima.net/user/#">联系我们</a>
+			<span>|</span>
+			<a href="http://mp-ttsx-python.itheima.net/user/#">招聘人才</a>
+			<span>|</span>
+			<a href="http://mp-ttsx-python.itheima.net/user/#">友情链接</a>
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	<script src="../js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript"src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/axios.js"></script>
+	<script type="text/javascript">
+
+		var vm=new Vue({
+			el:'#app',
+			data:{
+				user:{},
+				addr:{}
+			},
+			methods:{
+
+			},
+			mounted:function(){
+				axios.all([getAddr(),checkLogin()])
+						.then(axios.spread((fn1,fn2)=>{
+							console.log(fn2.data)
+							if (!fn2.data.code){
+								window.location.href="../login.html"
+							}
+							this.user=fn2.data.obj.menber;
+							this.addr=fn1.data.obj.addrinfo[0];
+							console.log(this.addr);
+							console.log(this.user);
+						}));
+			}
+		});
+		function checkLogin(){
+			return axios.get('../menber/check');
+		}
+		function getAddr(){
+			return axios({
+				url:'../address/findAddr',
+				method:'get',
+				params:{}
+			});
+		}
+	</script>
+
+	</body>
+</html>

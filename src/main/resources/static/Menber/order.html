@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://mp-ttsx-python.itheima.net/user/address -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>天天生鲜-支付订单</title>
+ 	<link rel="shortcut icon" href="../images/logo.png">
+ 	<link rel="stylesheet" href="../css/reset.css">
+ 	<link rel="stylesheet" href="../css/main.css">
+ 	<link rel="stylesheet" href="../css/order.css">
+</head>
+
+<body>
+<div id="app">
+	<!-- 头部  -->
+	<div class="header_con">
+    	<div class="header">
+    		<div class="welcome fl">欢迎来到天天生鲜</div>
+    		<div class="fr">
+                <div class="login_info fl" v-if="onlogin">
+                	欢迎：<em>[{{loginName}}]</em>
+					<a href="" @click="loginOut">退出</a>
+                </div>
+            	 <div class="user_link fl">
+                    <span> | </span>
+                    <a href="userinfomation.html">用户中心</a>
+                    <span> | </span>
+                    <a href="cart.html">我的购物车</a>
+                    <span> | </span>
+                    <a href="allOrder.html">我的订单</a>
+           		 </div> 
+             </div>  
+    	</div>
+    </div>
+    
+    <!-- 搜素框 -->
+    <div class="search_bar clearfix">
+        <a href="../index.html" class="logo fl"><img src="../images/logo.png"></a>
+        <div class="search_con fl">
+            <input type="text" placeholder="搜素商品" name="" class="input_text fl">
+            <input type="button" value="搜索" class="input_btn fr">
+        </div>
+    </div>
+     
+    <!-- 收货地址 -->
+    <h3 class="common_title">确认收货地址</h3>
+
+	<div class="common_list_con clearfix">
+		<dl>
+			<dt>寄送到：</dt>
+			<dd><input type="radio" name="" checked=""> {{addr.addr}} （{{addr.name}} 收） {{addr.tel}}</dd>
+		</dl>
+		<a href="address.html" class="edit_site">编辑收货地址</a>
+	</div>
+    
+   	<!-- 支付方式 -->	
+    <h3 class="common_title">支付方式</h3>	
+	<div class="common_list_con clearfix">
+		<div class="pay_style_con clearfix">
+			<input type="radio" name="pay_style" checked>
+			<label class="cash">货到付款</label>
+			<input type="radio" name="pay_style">
+			<label class="weixin">微信支付</label>
+			<input type="radio" name="pay_style">
+			<label class="zhifubao"></label>
+		</div>
+	</div>
+    
+   	<!-- 商品列表 -->
+    <h3 class="common_title">商品列表</h3>
+	<div class="common_list_con clearfix">
+		<ul class="goods_list_th clearfix">
+			<li class="col01">商品名称</li>
+			<li class="col02">商品单位</li>
+			<li class="col03">商品价格</li>
+			<li class="col04">数量</li>
+			<li class="col05">小计</li>		
+		</ul>
+		<ul class="goods_list_td clearfix" v-for="(good, index) in goods" >
+			<li class="col01">{{index+1}}</li>			
+			<li class="col02"><img :src="'../'+good.pics"></li>
+			<li class="col03">{{good.gname}}</li>
+			<li class="col04">{{good.weight}}{{good.unit}}</li>
+			<li class="col05">{{good.price}}元</li>
+			<li class="col06">{{OrderItem[index].nums}}</li>
+			<li class="col07">{{OrderItem[index].nums*good.price}}元</li>
+		</ul>
+	</div>
+     
+    <!-- 金额结算 -->	
+    <h3 class="common_title">总金额结算</h3>
+	<div class="common_list_con clearfix">
+		<div class="settle_con">
+			<div class="total_goods_count">共<em>{{totalCount}}</em>件商品，总金额<b>{{totalPrice}}元</b></div>
+			<div class="transit">运费：<b>{{postFee}}元</b></div>
+			<div class="total_pay">实付款：<b>{{totalPrice+postFee}}元</b></div>
+		</div>
+	</div>
+	<div class="order_submit clearfix">
+		<a href="javascript:;" id="order_btn" @click="submitOrder()">提交订单</a>
+	</div>	
+    
+    <div class="popup_con">
+		<div class="popup">
+			<p>订单提交成功！</p>
+		</div>
+		
+		<div class="mask"></div>
+	</div>
+	<button @click="show">打印</button>
+</div>        
+    <!-- 版权所有 -->
+	<div class="footer">
+    	<div class="foot_link">
+    		<a href="#">关于我们</a> <span> | </span>
+            <a href="#">联系我么</a> <span> | </span>
+            <a href="#">招聘人才</a> <span> | </span>
+            <a href="#">友情链接</a> 
+    	</div>
+    	<p>CcpyRight &copy; 2021 衡阳市J2EE All Rights Reserverd</p>
+        <p>电话：110</p>
+    </div>
+    
+    <script src="../js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../js/slide.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/axios.js"></script>
+    <script type="text/javascript">
+	var orderno=document.location.href.split("?")[1].split("=")[1];
+	if (orderno==""){
+		window.location.href="index.html";
+	}
+		$('#order_btn').click(function() {
+			localStorage.setItem('order_finish',2);
+
+			$('.popup_con').fadeIn('fast', function() {
+
+				setTimeout(function(){
+					$('.popup_con').fadeOut('fast',function(){
+						
+						window.location.href = '../index.html';
+					});	
+				},3000)
+				
+			});
+		});
+ 		var vm=new Vue({
+ 			el:'#app',
+ 			data:{
+ 				onlogin:false,
+ 				outlogin:true,
+ 				loginName:'匿名',
+ 				goodurl:'',
+ 				count:0,
+ 				goods:{},
+ 				addr:{},
+ 				OrderItem:{},
+ 				totalPrice:0,
+ 				totalCount:0,
+ 				postFee:10,
+				desc:""
+			},
+ 			methods:{
+				show:function () {
+					console.log(this.addr);
+				},
+				submitOrder:function(){
+					orderhref="http://localhost:8000/shop/jsp/alipay.trade.page.pay.jsp?WIDout_trade_no="+this.OrderItem[0].ono+"&WIDtotal_amount="+(this.totalPrice+this.postFee)+"&WIDsubject=订单支付&WIDbody=购买 "+this.desc;
+					window.location.href=orderhref;
+				},
+				loginOut:function(){
+					axios({
+						url:'menber/loginOut',
+						method:'post',
+					}).then(result=>{
+						alert("退出成功");
+						window.location.href="login.html"
+					})
+				}
+ 			},
+ 			mounted:function(){
+ 				//检查是否登录
+				$.ajax({
+					url:"../menber/check" ,
+					type:"get" ,
+					data:{},
+					success:function (data) {
+						console.log(data);
+						if(data.code){
+							vm.$data.onlogin=true;
+							vm.$data.outlogin=false;
+							console.log(vm.$data.onlogin);
+							vm.$data.loginName=data.obj.menber.nickname;
+							//alert(fn1.data.menber.nickName);
+						}else{
+							window.location.href="../login.html";
+							vm.$data.onlogin=false;
+							vm.$data.outlogin=true;
+						}
+					},
+					error:function () {
+						alert("出错啦...")
+						window.location.href="../login.html"
+					},
+					dataType:"json"
+				});
+
+				//查询地址
+				$.ajax({
+					url:"../address/findAddr" ,
+					type:"get" ,
+					data:{},
+					success:function (data) {
+						console.log(data.obj.addrinfo[0]);
+						vm.$data.addr=data.obj.addrinfo[0];
+					},
+					error:function () {
+						alert("地址出错啦...")
+						window.location.href="../index.html"
+					},
+					dataType:"json"
+				});
+				//查询订单
+				$.ajax({
+					url:"../order/findOrder" ,
+					type:"get" ,
+					data:{ono:orderno},
+					success:function (data) {
+						console.log(data);
+						vm.$data.goods=data.obj.orderGoods;
+						vm.$data.OrderItem=data.obj.orderitem;
+						num=0;
+						vm.$data.goods.forEach((good,index)=>{
+							vm.$data.totalPrice+=good.price*vm.$data.OrderItem[index].nums;
+							vm.$data.totalCount+=vm.$data.OrderItem[index].nums;
+							num+=vm.$data.OrderItem[index].nums;
+							vm.$data.desc+=good.gname+" ";
+						});
+
+						vm.$data.count=num;
+					},
+					error:function () {
+						alert("订单出错啦...")
+						window.location.href="../index.html"
+					},
+					dataType:"json"
+				});
+			}
+
+
+ 		});
+
+
+
+
+ 		function getAddr(){
+ 					return axios({
+ 						url:'../address/findAddr',
+ 						method:'get',
+ 						params:{}
+ 					});
+ 				}
+ 		function getOrder(){
+			return axios({
+					url:'../order/findOrder',
+						method:'get',
+						params:{
+						    ono:orderno
+					}
+					});
+	 		}
+ 		function checkLogin(){
+ 			return axios.get('../menber/check');
+ 		}
+ 		//上一页面的url
+		//console.log(document.referrer);
+ 	</script>
+</body>
+</html>

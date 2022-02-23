@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jl.repository.OrderDAO">
+
+    <insert id="add" parameterType="com.jl.bean.OrderInfo">
+        insert into orderinfo values(#{ono},now(),null,null,null,0,#{price},0,#{mno})
+    </insert>
+
+    <select id="findByTrem" resultType="com.jl.bean.OrderInfo" parameterType="com.jl.bean.OrderInfo" >
+        select
+            ono,odate,ano,sdate,rdate,status,price,invoice,mno
+        from
+            orderinfo
+        where 1=1
+        <if test="ono!=null"> and ono=#{ono} </if>
+        <if test="mno!=null"> and mno=#{mno} </if>
+        <if test="status!=null"> and status=#{status} </if>
+    </select>
+
+   <update id="update" parameterType="com.jl.bean.OrderInfo">
+        update orderinfo set status=1 where ono = #{ono}
+   </update>
+
+
+    <delete id="delete"  parameterType="com.jl.bean.OrderInfo">
+
+    </delete>
+
+    <insert id="genOrder">
+
+    </insert>
+
+</mapper>

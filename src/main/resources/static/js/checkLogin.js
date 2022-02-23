@@ -1,0 +1,48 @@
+var login=new Vue({
+	el:'#yc_login',
+	data:{
+		onlogin:false,
+		outlogin:true,
+		loginName:'匿名',
+		loginId:'',//记录登录用户的id
+		goodsCount:2,
+		carts:{}
+	},
+	methods:{
+		gotoCart:function(){
+			if(!this.onlogin){
+				window.location.href = 'login.html';
+			}else{
+				window.location.href = 'cart.html';
+			}
+		},
+		toCart:function(){
+			if(!login.$data.loginId){
+				alert("请先登录");
+				location.href="login.html";
+				return;
+			}
+			window.location.href="cart.html";
+		}
+	},
+	mounted:function(){
+		axios({
+			url:'menber/check',
+			method:'get'
+		}).then(result=>{
+			if(result.data.menber){
+				this.onlogin=true;
+				this.outlogin=false;
+				this.loginName=result.data.menber.nickName;
+				this.loginId=result.data.menber.mno;//将登录用户的会员编号储存在loginId
+				if(result.data.carts){
+					this.carts=result.data.carts;
+					this.goodsCount=result.data.carts.length;
+				}
+			}else{
+				this.onlogin=false;
+				this.outlogin=true;
+			}
+		})
+	}
+});

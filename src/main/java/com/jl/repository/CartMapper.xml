@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jl.repository.CartDAO">
+
+    <insert id="add" parameterType="com.jl.bean.CartInfo">
+        insert into cartinfo values(null,#{mno},#{gno},#{num})
+    </insert>
+
+    <select id="findByTrem" resultType="com.jl.bean.CartInfo" parameterType="com.jl.bean.CartInfo" >
+        select
+        cno,mno,num
+        from
+        cartinfo
+        where 1=1
+        <if test="cno!=null"> and cno =#{cno} </if>
+        <if test="mno!=null"> and mno=#{mno} </if>
+        <if test="gno!=null"> and gno=#{gno} </if>
+        order by cno desc
+    </select>
+
+    <update id="update" parameterType="com.jl.bean.CartInfo">
+        update cartinfo set num=num+1 where cno = #{cno}
+   </update>
+
+
+    <delete id="delete"  parameterType="com.jl.bean.CartInfo">
+        delete from cartinfo where cno = #{cno}
+    </delete>
+
+    <delete id="deleteByCnos"  parameterType="java.lang.String">
+        delete
+        from
+        cartinfo
+        where 1=1 and cno in
+        <foreach collection="array" item="item" index="index"
+                 open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findVoByTrem" resultType="com.jl.bean.CartVO" parameterType="com.jl.bean.CartVO" >
+        select
+        cno,mno,num,tno,g.gno gno,gname,price,
+        intro,balance,pics,unit,qperied,weight,descr
+        from
+        cartinfo c
+        inner join
+        goodsinfo g
+        on
+        g.gno=c.gno
+        where 1=1
+        <if test="tno!=null"> and tno =#{tno} </if>
+        <if test="cno!=null"> and cno =#{cno} </if>
+        <if test="mno!=null"> and mno=#{mno} </if>
+        <if test="gno!=null"> and gno=#{gno} </if>
+        order by cno desc
+    </select>
+    <select id="findByCnos" resultType="com.jl.bean.CartVO" >
+        select
+        cno,mno,num,tno,g.gno gno,gname,price,
+        intro,balance,pics,unit,qperied,weight,descr
+        from
+        cartinfo c
+        inner join
+        goodsinfo g
+        on
+        g.gno=c.gno
+        where 1=1 and cno in
+        <foreach collection="cnos" item="item" index="index"
+                 open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

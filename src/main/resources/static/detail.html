@@ -1,0 +1,281 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>天天生鲜-商品详情</title>
+<link rel="short icon" href="images/logo.png">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/details.css">
+</head>
+
+<body>
+<div id="app">
+	<!-- 头部  -->
+	<div class="header_con">
+    	<div class="header">
+    		<div class="welcome fl">欢迎来到天天生鲜</div>
+    		<div class="fr">
+            	<div class="login_info fl" v-if="onlogin">
+                	欢迎：<em>[{{loginName}}]</em>
+					<a href="" @click="loginOut">退出</a>
+                </div>
+                <div class="login_btn fl" v-if="outlogin">
+                	<a href="login.html">登录</a>
+                    <span> | </span>
+                    <a href="register.html">注册</a>
+                </div>
+            	 <div class="user_link fl">
+                    <span> | </span>
+                    <a href="Menber/userinfomation.html">用户中心</a>
+                    <span> | </span>
+                    <a href="#" @click="gotoCart()">我的购物车</a>
+                    <span> | </span>
+                    <a href="Menber/alOrder.html">我的订单</a>
+           		 </div> 
+             </div>  
+    	</div>
+    </div>
+    
+     <!-- 搜素框 -->
+     <div class="search_bar clearfix">
+        <a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+        <div class="search_con fl">
+            <input type="text" placeholder="搜素商品" name="" class="input_text fl">
+            <input type="button" value="搜索" class="input_btn fr">
+        </div>
+        <div class="guest_cart fr">
+            <a href="#" class="cart_name fl" @click="gotoCart()">我的购物车</a>
+            <div class="goods_count fl" id="show_count">1</div>
+        </div>
+     </div>
+     
+    <!-- 全部商品分类 --> 
+    <div class="navbar_con">
+    	<div class="navbar clearfix">
+        	<!-- 动态下拉框 -->
+    		<div class="subnav_con fl">
+            	<h1 class="fl">全商品分类</h1>
+            	<span></span>
+                <ul class="subnav">
+                    <li><a href="#model01" class="fruit">新鲜水果</a></li>
+                    <li><a href="#" class="sealfood">海鲜水产</a></li>
+                    <li><a href="#" class="meet">猪牛羊肉</a></li>
+                    <li><a href="#" class="egg">禽类蛋品</a></li>
+                    <li><a href="#" class="vegetables">新鲜蔬菜</a></li>
+                    <li><a href="#" class="ice">速冻食品</a></li>
+            	</ul>
+            </div>
+    		<ul class="navlist fl">
+    			<li><a href="index.html">首页</a></li>
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+    		</ul>
+    	</div>
+    </div>
+     
+    <!-- 面包屑导航 --> 
+    <div class="breadcrumb" id="breadcrumb" v-for="good in goods" v-if="good.gno==count">
+     	<a href="javascript:void(0)">全部分类</a>
+        <span>&gt;</span>
+        <a href="javascript:void(0)" v-for="type in types" v-if="good.tno==type.tno">{{type.tname}}</a>
+        <span>&gt;</span>
+        <a href="javascript:void(0)">商品详情</a>
+     </div>
+     
+    <!-- 商品展示 -->
+    <div class="goods_details_con clearfix" v-for="good in goods" v-if="good.gno==count">
+    	<div class="goods_details_pic fl"><img :src="good.pics"></div>
+    	<div class="goods_details_list fr">
+        	<h3>{{good.gname}}</h3>
+        	<p>{{good.descr}}</p>
+        	<div class="price_bar">
+            	<span class="show_price">￥<em>{{good.price}}</em>元</span>
+                <span class="show_unit">单位：<em>{{good.unit}}</em></span>
+            </div>
+            <div class="goods_num clearfix">
+				<div class="num_name fl">数量：</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" v-model="num">
+					<a href="javascript:;" class="add fr" @click="num++" >+</a>
+					<a href="javascript:;" class="minus fr"  @click="num--" v-on:click="checkNum" >-</a>	
+				</div> 
+			</div>
+			<div class="total">总价：<em>{{num*good.price}}</em>元</div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn" id="buy_btn" v-on:click="buy">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="add_cart" v-on:click="addcarts">加入购物车</a>				
+			</div>
+        </div>
+    </div>
+    
+    <!-- 商品详情 -->
+    <div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					<li>
+						<a href="#"><img :src="goods[0].pics"></a>
+						<h4><a href="#">{{goods[0].gname}}</a></h4>
+						<div class="prize">￥{{goods[0].price}}</div>
+					</li>
+					<li>
+						<a href="#"><img :src="goods[1].pics"></a>
+						<h4><a href="#">{{goods[1].gname}}</a></h4>
+						<div class="prize">￥{{goods[1].price}}</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+                <li>推荐</li>
+			</ul>
+
+			<div class="tab_content" v-for="good in goods" v-if="good.gno==count">
+				<dl>
+					<dt>商品详情：</dt>
+					<dd>{{good.intro}}</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+</div>    
+    <!-- 版权所有 -->
+    <div class="footer">
+    	<div class="foot_link">
+        	<a href="#">关于我们</a> <span> | </span>
+            <a href="#">联系我们</a> <span> | </span>
+            <a href="#">招聘广告</a> <span> | </span>
+            <a href="#">友情链接</a>
+        </div>
+    	<p>CopyRight &copy; 2021 衡阳市J2EE All Rights Reserverd</p>
+        <p>电话：110</p>
+    </div>
+</body>
+<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/slide.js"></script>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/axios.js"></script>
+<script type="text/javascript">
+var vm=new Vue({
+	el:'#app',
+	data:{
+		onlogin:false,
+		outlogin:true,
+		loginName:'匿名',
+		goodCount:2,
+		goods:{},
+		types:{},
+		count:13,
+		num:1,
+		integrityurl:window.location.href
+	},
+	methods: {
+		gotoCart:function(){
+			if(!this.onlogin){
+				window.location.href = 'login.html';
+			}else{
+				window.location.href = 'cart.html';
+			}
+
+		},
+		loginOut:function(){
+			axios({
+				url:'menber/loginOut',
+				method:'post',
+			}).then(result=>{
+				alert("退出成功");
+				window.location.href="login.html"
+			})
+		},
+		//检测是否超越下界
+		checkNum: function (event) {
+		  if (this.num<=1) {
+			  this.num=1;
+		  }else{
+		  	  this.num--;
+		  	  //console.log(this.num);
+		  }
+		  
+	    },
+	    buy:function(event){
+	    	if(this.onlogin){
+	    		window.location.href = '/shop/Menber/order.html#'+this.count;
+	    	}else{
+	    		window.location.href = '/shop/login.html';
+	    	}
+	    },
+	    addcarts:function(event){
+
+	    	if(this.onlogin){
+				//方送ajax请求
+				axios({
+					url:'cart/add',
+					method:'get',
+					params:{num:this.num,gno:this.count }
+				}).then(result=>{
+					console.log(result);
+					if(result.data.code){
+						alert("添加成功");
+						window.location.href="cart.html";
+					}
+				});
+
+
+	    	}else{
+	    		window.location.href = '/shop/login.html';
+	    	}
+	    }
+	  },
+	mounted:function(){
+		axios.all([checkLogin(),getGoodInfo()])
+		.then(axios.spread((fn1,fn2)=>{
+			console.log(fn1.data)
+			if(fn1.data.code){
+				console.log(fn1.data.obj);
+				this.onlogin=true;
+				this.outlogin=false;
+
+				this.loginName=fn1.data.obj.menber.nickname;
+				console.log(this.loginName);
+				if(fn1.data.code){
+					this.carts=fn1.data.obj.carts;
+					this.goodCount=fn1.data.obj.carts.length;
+					console.log(fn1.data.obj.carts.length);
+				}
+			}else{
+				this.onlogin=false;
+				this.outlogin=true;
+			}
+			this.goods=fn2.data.obj.goods;
+			this.types=fn2.data.obj.types;
+			this.count=document.location.hash.substring(1);
+			console.log(this.goods);
+			//console.log(this.types)
+		}));
+	}
+	 
+});
+function getGoodInfo(){
+	return axios({
+		url:'goods/finds',
+		method:'get',
+		params:{}
+	});
+}
+function checkLogin(){
+	return axios.get('menber/check');
+}
+
+
+</script>
+</html>

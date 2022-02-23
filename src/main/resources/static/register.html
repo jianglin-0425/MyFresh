@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0034)http://www.viete.vip/user/register -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+    
+	<title>天天生鲜-注册</title>
+	<link rel="stylesheet" type="text/css" href="register/reset.css">
+	<link rel="stylesheet" type="text/css" href="register/main.css">
+    
+	
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="register/register.js"></script>
+
+    <script type="text/javascript">
+        /*$(function () {
+            $('#user_name').blur(function() {
+                check_user_name()
+            });
+            function check_user_name() {
+                var len = $('#user_name').val().length;
+                if (len &lt; 5 || len > 20) {
+                    $('#user_name').next().html('请输入5-20个字符的用户名');
+                    $('#user_name').next().show();
+                    error_name = true;
+                }
+                else {
+                    var csrfToken = $("[name='csrfmiddlewaretoken']").val();
+                    var username = $('#user_name').val();
+                    //$.post("/user/register_check_name", {data: data}, function (data) {
+                    $.ajax({
+                            'url': '/user/register_check_name',
+                            'type': 'post',
+                            'data': {'username': username, "csrfmiddlewaretoken": csrfToken}
+                        }).success(function (data) {
+                        if (data.res == 1){
+                            $('#user_name').next().html('用户名已存在');
+                            $('#user_name').next().show();
+                        }
+                        else{
+                            $('#user_name').next().hide();
+                        }
+                    });
+                }
+            }
+        })*/
+    </script>
+
+</head>
+<body>
+	<div class="register_con">
+		<div class="l_con fl">
+			<a href="http://www.viete.vip/" class="login_logo">
+				<img src="images/logo02.png"></a>
+			<div class="reg_slogan">足不出户  ·  新鲜每一天</div>
+			<div class="reg_banner"></div>
+		</div>
+
+		<div class="r_con fr">
+			<div class="reg_title clearfix">
+				<h1>用户注册</h1>
+				<a href="login.html">登录</a>
+			</div>
+			<div class="reg_form clearfix">
+				<form method="post">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="Jt8BET9urwxed5ocq4CyQGvdC54zHE0y">
+				<ul>
+					<li>
+						<label>用户名:</label>
+						<input type="text" name="user_name" id="user_name">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>密码:</label>
+						<input type="password" name="pwd" id="pwd">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>确认密码:</label>
+						<input type="password" name="cpwd" id="cpwd">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li>
+						<label>邮箱:</label>
+						<input type="text" name="email" id="email">
+						<span class="error_tip">提示信息</span>
+					</li>
+					<li class="agreement">
+						<input type="checkbox" name="allow" id="allow" checked="checked">
+						<label>同意”天天生鲜用户使用协议“</label>
+						<span class="error_tip2">提示信息</span>
+					</li>
+					<li class="reg_sub">
+						<input type="button" value="注 册" name="">
+					</li>
+				</ul>				
+				</form>
+                
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="http://www.viete.vip/user/register#">关于我们</a>
+			<span>|</span>
+			<a href="http://www.viete.vip/user/register#">联系我们</a>
+			<span>|</span>
+			<a href="http://www.viete.vip/user/register#">招聘人才</a>
+			<span>|</span>
+			<a href="http://www.viete.vip/user/register#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2018 All Rights Reserved 电话：</p>
+        <p>     <a target="_blank" href="http://beian.miit.gov.cn/">粤ICP备19004150号</a>
+        </p>
+
+	</div>
+
+	<script type="text/javascript"src="js/vue.js"></script>
+	<script type="text/javascript" src="js/axios.js"></script>
+	<script type="text/javascript">
+		var vm=new Vue({
+			el:'#app',
+			data:{
+				account:'Lydia',
+				pwd:'a',
+				code:''
+			},
+			methods:{
+				login:function(){
+					//方送ajax请求
+					axios({
+						url:'menber/login',
+						method:'post',
+						params:{nickName:this.account,pwd:this.pwd}
+					}).then(result=>{
+						if(result.data.code==-1){
+							alert('验证码错误');
+						}else if(result.data.code>0){
+							window.location.href="index.html";
+							//history.go(-1);
+						}else{
+							alert('用户登录失败');
+						}
+					})
+				}
+			}
+
+
+		})
+
+	</script>
+
+	</body>
+</html>

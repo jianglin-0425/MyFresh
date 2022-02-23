@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jl.repository.GoodsInfoDao">
+
+    <insert id="add" parameterType="com.jl.bean.GoodsInfo">
+        insert into
+            goodsinfo
+        values
+        (null,#{gname},#{tno},#{price},#{intro},#{balance},
+        #{pics},#{unit},#{qperied},#{weight},#{descr});
+    </insert>
+
+    <select id="findByTrem" resultType="com.jl.bean.GoodsInfo" parameterType="com.jl.bean.GoodsInfo" >
+        select
+            gno,gname,tno,price,intro,balance,pics,unit,qperied,weight,descr
+        from
+            goodsinfo
+        where 1=1
+        <if test="gname!=null"> and gname=#{gname} </if>
+        <if test="gno!=null "> and gno=#{gno} </if>
+    </select>
+
+   <select id="finds" resultType="com.jl.bean.GoodsInfo">
+        select gno,tno,gname,price,intro,balance,pics,unit,qperied,
+			   weight,descr
+		from
+		    goodsinfo gf1
+		where
+		    4 > (
+		        select
+		            count(gno)
+				 from
+				    goodsinfo gf2
+				where
+				    gf1.tno=gf2.tno and gf1.gno > gf2.gno
+				)
+		order by gf1.tno asc ,gf1.gno desc
+   </select>
+
+
+    <select id="getTotal"  parameterType="com.jl.bean.GoodsVO" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            goodsinfo
+        where 1=1
+        <if test="gname!=null"> and gname= #{gname} </if>
+        <if test="price!=null"> and price=#{price} </if>
+    </select>
+
+    <select id="findByPage" resultType="com.jl.bean.GoodsVO"  >
+        select
+            t.tno tno,t.tname tname,pics,status,gno,gname,price,
+            intro,balance,pics,unit,qperied,weight,descr
+        from
+            goodstype t
+        inner join
+            goodsinfo g
+        on
+            g.tno=t.tno
+        where 1=1
+        <if test="goodsVO.tno!=null"> and t.tno=#{goodsVO.tno} </if>
+        <if test="goodsVO.gno!=null"> and gno=#{goodsVO.gno} </if>
+        <if test="goodsVO.gname!=null"> and gname=#{goodsVO.gname}</if>
+        order by gno desc
+        <if test="pageNum!=null and pageSize!=null">
+            <bind name="key_offset" value="(pageNum)*pageSize"></bind>
+            LIMIT #{key_offset},#{pageSize}
+        </if>
+    </select>
+    <select id="totalPage" resultType="java.lang.Integer" parameterType="com.jl.bean.GoodsVO" >
+        select
+            count(*)
+        from
+            goodstype t
+        inner join
+            goodsinfo g
+        on
+            g.tno=t.tno
+        where 1=1
+        <if test="tno!=null"> and t.tno=#{tno} </if>
+        <if test="gno!=null"> and gno=#{gno} </if>
+        <if test="gname!=null"> and gname=#{gname}</if>
+        <if test="tname!=null"> and t.tname=#{gname}</if>
+    </select>
+
+</mapper>

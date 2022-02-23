@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>天天生鲜-商品列表</title>
+ <link rel="shortcut icon" href="images/logo.png">
+ <link rel="stylesheet" href="css/reset.css">
+ <link rel="stylesheet" href="css/main.css">
+ <link rel="stylesheet" href="css/goods.css">
+</head>
+
+<body>
+<div id="yc_login">
+	<!-- 头部  -->
+	<div class="header_con" >
+    	<div class="header">
+    		<div class="welcome fl">欢迎来到天天生鲜</div>
+    		<div class="fr">
+            	<div class="login_info fl" v-if="onlogin">
+                	欢迎：<em>[{{loginName}}]</em>
+                    <a href="" @click="loginOut">退出</a>
+                </div>
+                <div class="login_btn fl" v-if="outlogin">
+                	<a href="login.html">登录</a>
+                    <span> | </span>
+                    <a href="register.html">注册</a>
+                </div>
+            	 <div class="user_link fl">
+                    <span> | </span>
+                    <a href="Menber/userinfomation.html">用户中心</a>
+                    <span> | </span>
+                    <a href="#" @click="gotoCart()">我的购物车</a>
+                    <span> | </span>
+                    <a href="Menber/alOrder.html">我的订单</a>
+           		 </div> 
+             </div>  
+    	</div>
+    </div>
+    
+     <!-- 搜素框 -->
+     <div class="search_bar clearfix">
+        <a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+        <div class="search_con fl">
+            <input type="text" placeholder="搜素商品" name="" class="input_text fl">
+            <input type="button" value="搜索" class="input_btn fr">
+        </div>
+        <div class="guest_cart fr">
+            <a href="#" class="cart_name fl" @click="gotoCart()">我的购物车</a>
+            <div class="goods_count fl" id="show_count">{{goodsCount}}</div>
+        </div>
+     </div>
+</div>     
+    <!-- 全部商品分类 --> 
+    <div class="navbar_con">
+    	<div class="navbar clearfix">
+        	<!-- 动态下拉框 -->
+    		<div class="subnav_con fl">
+            	<h1 class="fl">全商品分类</h1>
+            	<span></span>
+                <ul class="subnav">
+                    <li><a href="#model01" class="fruit">新鲜水果</a></li>
+                    <li><a href="#" class="sealfood">海鲜水产</a></li>
+                    <li><a href="#" class="meet">猪牛羊肉</a></li>
+                    <li><a href="#" class="egg">禽类蛋品</a></li>
+                    <li><a href="#" class="vegetables">新鲜蔬菜</a></li>
+                    <li><a href="#" class="ice">速冻食品</a></li>
+            	</ul>
+            </div>
+    		<ul class="navlist fl">
+    			<li><a href="index.html">首页</a></li>
+                <li class="interval">|</li>
+                <li><a href="">手机生鲜</a></li>
+                <li class="interval">|</li>
+                <li><a href="">抽奖</a></li>
+    		</ul>
+    	</div>
+    </div>
+     
+    <!-- 面包屑导航 --> 
+<div id="yc_show_goods">     
+    <div class="breadcrumb" id="breadcrumb">
+     	<a href="javascript:void(0)">全部分类</a>
+        <span>&gt;</span>
+        <a href="javascript:void(0)">新鲜水果</a>
+     </div>
+     
+     <!-- 商品展示区域-->
+     <div class="main_wrap clearfix">
+     	<!-- 新品推荐 -->
+        <div class="l_wrap fl clearfix">
+        	<div class="new_goods">
+            	<h3>新品推荐</h3>
+            	<ul>
+                	<li>
+                    	<a href="#"><img src="images/goods/goods003.jpg"></a>
+                        <h4><a href="#">牛奶草莓</a></h4>
+                        <div class="prize">￥16.80</div>
+                    </li>
+                	<li>
+                    	<a href="#"><img src="images/goods/goods009.jpg"></a>
+                         <h4><a href="#">海南帝王蕉</a></h4>
+                        <div class="prize">￥99.00</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 热门类型查询 -->
+        <div class="r_wrap fr clearfix">
+        	<div class="sort_bar">
+            	<a href="javascript:void(0);" id="normal" class="type active">默认</a>
+                <a href="javascript:void(0);" id="price" class="type ">价格</a>
+                <a href="javascript:void(0);" id="manUse" class="type ">人气</a>
+            </div>
+        	<ul class="goods_type_list clearfix show1">
+                
+          		<li v-for="good in goods ">
+                    <a :href="'detail.html#'+good.gno"><img :src="good.pics"></a>
+                    <h4><a :href="'detail.html#'+good.gno">{{good.gname}}</a></h4>
+                    <div class="operate">
+                    	<span class="prize">￥{{good.price}}</span>
+                        <span class="unit">{{good.price}}/{{good.unit}}</span>
+                        <a href="#" class="add_goods" title="加入购物车" @click="addCart(good.gno)"></a>
+                    </div>
+                </li>
+            </ul>
+			     <!-- 分页栏-->
+			<div class="pagenation">
+				<ul>
+					<li><a href="#">上一页</a></li>
+					<li v-for="i in total">
+						<a href="#" class="active" @click="findByPage(i)" v-if="pageNo">{{i}}</a>
+						<a href="#"  @click="findByPage(i)" v-else>{{i}}</a>
+					</li>
+					<li><a href="#">下一页</a></li>
+				</ul>
+			</div>
+        </div>
+   
+     </div>
+    </div>
+    <!-- 版权所有 -->
+    <div class="footer">
+    	<div class="foot_link">
+        	<a href="#">关于我们</a> <span> | </span>
+            <a href="#">联系我们</a> <span> | </span>
+            <a href="#">招聘广告</a> <span> | </span>
+            <a href="#">友情链接</a>
+        </div>
+    	<p>CopyRight &copy; 2021 衡阳市J2EE All Rights Reserverd</p>
+        <p>电话：110</p>
+    </div>
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript" src="js/axios.js"></script>
+    <script type="text/javascript" src="js/checkLogin.js"></script>
+    <script type="text/javascript" src="js/qs.js"></script>
+    <script type="text/javascript">
+    	console.log(decodeURI(location.hash));
+    	var tno;
+    	var rows=5;
+    	var page=1;
+    	var vm=new Vue({
+    		el:'#yc_show_goods',
+    		data:{
+    			typeName:'',
+    			goods:{},//商品信息
+    			total:0,//总页码数
+    			pageNo:1//当前页面
+    		},
+	    	methods:{
+	    		gotoCart:function(){
+	    			if(!this.onlogin){
+	    				window.location.href = 'login.html';
+	    			}else{
+	    				window.location.href = 'cart.html';
+	    			}
+	    		},
+	    		findByPage:function(idx){
+	    			page=idx;
+	    			this.pageNo=idx;
+					axios({
+						url:'/goods/findPage',
+						method:'get',
+						params:{tno:tno,page:page,rows:rows}
+					}).then(result=>{
+						this.goods=result.data.obj.rows;
+					});
+	    		},
+	    		addCart:function(gno){
+	    			//检查是否登录    实例名 .$data.xx可以访问实例中data中的属性
+	    			if(!login.$data.loginId){
+	    				alert("请先登录");
+	    				location.href="login.html";
+	    				return;
+	    			}
+	    			//如果购物车中数据添加成功，及时更新页面显示购物车的数据	(购物车数据存在数据库，存在 )
+					let flag=0;//标识符
+	    			//判断该商品是否存在购物车中
+	    			let lcarts=login.$data.carts;
+					if(lcarts.length>0){//说明购物车中有数据
+						for(let i=0,len=lcarts.length;i<len;i++){
+							if(lcarts[i].gno==gno){
+								//说明该商品已在购物车中;
+								flag=1;
+								//发送请求 对于post请求关于参数封装   传递gno cno
+								axios.post("cart/update",qs.stringify({cno:lcarts[i].cno}))
+								.then(result=>{
+									let data=result.data.obj;
+									console.log(data);
+									if(data>0){
+										alert("加入购物车成功");
+									}else{
+										alert("加入购物车失败，请稍后再试...");
+									}
+								})
+								return;
+							}
+						}
+					}
+					if(flag==0){
+						axios.post("cart/add",qs.stringify({gno:gno,num:1}))
+						.then(result=>{
+							let data=result.data.obj;
+							console.log(data);
+							if(data!=0){
+								//购物车的数量徐亚更新
+								login.$data.goodsCount=login.$data.goodsCount+1;
+								//将新添加的对象添加到购物车中
+								login.$data.carts=data;
+								alert("加入购物车成功");
+							}else{
+								alert("加入购物车失败，请稍后再试...");
+							}
+						})
+
+					}
+	    			//发送数据到服务器端
+	    			
+	    		},
+                loginOut:function(){
+                    axios({
+                        url:'menber/loginOut',
+                        method:'post',
+                    }).then(result=>{
+                        alert("退出成功");
+                        window.location.href="login.html"
+                    })
+                }
+	    		
+	    	},
+	    	mounted:function(){
+	    		axios.all([getGoodsInfo()]).then(axios.spread((fn1)=>{
+	    			console.log(fn1.data)
+	    		    console.log(fn1.data.obj.rows);
+	    			this.goods=fn1.data.obj.rows;
+	    			this.total=Math.ceil(fn1.data.obj.total/rows);
+	    			console.log(this.total);
+	    			this.typeName=$('#type_name').text();	
+	    		}));
+	    	}
+    	});
+    	function getGoodsInfo(){
+    		var hash=decodeURI(location.hash);
+    		console.log(hash);
+    		if(''==hash||hash.indexOf('#')<0){
+    			location.href="index.html";//没有按照规定格式访问页面则返回首页
+    		}
+    		hash=hash.replace("#", "").split("&");
+    		tno=hash[0];
+    		$('#type_name').text(hash[1]);
+    		return axios({
+    			url:"goods/findPage",
+    			method:'get',
+    			params:{tno:tno,page:page,rows:rows}
+    		});
+    	}
+    	
+    	
+    	//热门查询动态样式
+		//给我们热门类型查询做点击事件
+		$(".type").on("click",function(){
+			//默认查询方式 
+			var type = "id";
+			//移除原来的active的样式
+			$(".type").removeClass("active");
+			//获取此时点击的对象的文本是什么
+			var check = $(this).html();
+			//判断
+			if(check == "默认"){
+				$("#normal").addClass("active");
+			}
+			if(check == "价格"){
+				$("#price").addClass("active");
+				type = "gprice"
+			}
+			if(check == "人气"){
+				$("#manUse").addClass("active");
+				type = "gsales"
+			}
+			//与后台交互 暂不处理
+			/*
+			$.post("url",{type:type},function(data){
+				
+			});
+			*/
+			//模拟动态页面
+			var str = '';
+			var data = Math.round(Math.random()*22+1);
+			console.log(data);
+			for(var i= 1;i <data;i++){
+				if(i<10){
+					str += ' <li> <a href="#"><img src="images/goods/goods00'+i+'.jpg"></a>';
+				}else{
+					str += ' <li> <a href="#"><img src="images/goods/goods0'+i+'.jpg"></a>';
+				}
+                 str +=  '<h4><a href="#">牛奶草莓</a></h4>'+
+						'<div class="operate">'+
+						'<span class="prize">￥16.80</span>'+
+					   '<span class="unit">16.80/500g</span>'+
+						'<a href="cart.html" class="add_goods" title="加入购物车"></a>'+
+						'</div></li>';
+			}
+			//写入网页指定的标签中
+			$(".show1").html(str);
+			
+		})
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jl.repository.AdminDao">
+
+    <select id="findByTrem" resultType="com.jl.bean.AdminInfo" parameterType="com.jl.bean.AddrInfo" >
+        select
+            aid,aname,pwd,tel
+        from
+            admininfo
+        where 1=1
+        <if test="aid!=null"> and aid=#{aid} </if>
+        <if test="aname!=null "> and aname=#{aname} </if>
+        <if test="pwd!=null">and pwd=MD5(#{pwd}) </if>
+        <if test="tel!=null">and tel=#{tel} </if>
+    </select>
+
+    <select id="findByPage" resultType="com.jl.bean.AdminInfo" >
+
+        select
+            aid,aname,pwd,tel
+        from
+            admininfo
+        where 1=1
+        <if test="aid!=null"> and aid=#{aid} </if>
+        <if test="aname!=null "> and aname=#{aname} </if>
+        <if test="pwd!=null">and pwd=MD5(#{pwd}) </if>
+        <if test="tel!=null">and tel=#{tel}  </if>
+        LIMIT  #{pageNum}-1*#{pageSize},#{pageSize}
+
+    </select>
+
+
+    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.jl.bean.AdminInfo" >
+         select
+            count(*)
+         from
+            admininfo
+        where 1=1
+        <if test="aid!=null"> and aid=#{aid} </if>
+        <if test="aname!=null "> and aname=#{aname} </if>
+        <if test="pwd!=null">and pwd=MD5(#{pwd}) </if>
+        <if test="tel!=null">and tel=#{tel}  </if>
+    </select>
+
+</mapper>

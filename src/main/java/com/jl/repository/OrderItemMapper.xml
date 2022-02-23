@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jl.repository.OrderItemDAO">
+
+    <insert id="add" parameterType="com.jl.bean.OrderItemInfo">
+        insert into orderiteminfo (ino,ono,gno,nums,price,status) values (#{ino},#{ono},#{gno},#{nums},#{price},#{status});
+    </insert>
+
+    <insert id="addMultiple" parameterType="java.util.List">
+        insert into orderiteminfo (ino,ono,gno,nums,price,status)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.ino},#{item.ono},#{item.gno},#{item.nums},#{item.price},#{item.status})
+        </foreach>
+    </insert>
+
+    <select id="findByTrem" resultType="com.jl.bean.OrderItemInfo" parameterType="com.jl.bean.OrderItemInfo" >
+        select
+            ino,ono,gno,nums,price,status
+        from
+            orderiteminfo
+        where 1=1
+        <if test="ono!=null"> and ono=#{ono} </if>
+        <if test="gno!=null"> and gno=#{gno} </if>
+        <if test="status!=null"> and status=#{status} </if>
+    </select>
+
+    <update id="update" parameterType="com.jl.bean.OrderItemInfo">
+
+    </update>
+
+    <delete id="delete" parameterType="com.jl.bean.OrderItemInfo" >
+
+    </delete>
+
+    <select id="findItemVO" resultType="com.jl.bean.OrderItemVO" parameterType="com.jl.bean.OrderItemInfo" >
+        select
+            orderiteminfo.*,gname,weight,unit,pics
+        FROM
+            orderiteminfo
+        INNER join
+            goodsinfo
+        on
+            orderiteminfo.gno=goodsinfo.gno
+        where 1=1
+        <if test="ono!=null"> and ono=#{ono} </if>
+    </select>
+</mapper>

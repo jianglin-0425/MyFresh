@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jl.repository.AddrInfoDao">
+    <select id="findByTrem" resultType="com.jl.bean.AddrInfo" parameterType="com.jl.bean.AddrInfo" >
+        select
+            ano,mno,name,tel,zipcode,addr,flag,STATUS
+        from
+            addrinfo
+        where 1=1
+        <if test="mno!=null"> and mno = #{mno}  </if>
+        <if test="ano!=null"> and ano = #{ano}  </if>
+        <if test="flag!=null"> and flag = #{flag}  </if>
+        order by  flag desc
+    </select>
+
+    <update id="update" parameterType="com.jl.bean.AddrInfo">
+        update addrinfo
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="tel!=null">tel=#{tel},</if>
+            <if test="zipcode!=null">zipcode=#{zipcode},</if>
+            <if test="addr!=null">addr=#{addr},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="flag!=null">flag=#{flag}</if>
+        </set>
+        where 1=1
+        <if test="ano!=null"> and ano = #{ano}  </if>
+    </update>
+
+    <delete id="delete" parameterType="com.jl.bean.AddrInfo">
+        delete from addrinfo where ano=#{ano} ;
+    </delete>
+
+    <insert id="add">
+        INSERT into addrinfo VALUE(#{ano},#{mno},#{name},#{tel},#{zipcode},#{addr},#{flag},#{status})
+    </insert>
+
+</mapper>

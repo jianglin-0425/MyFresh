@@ -1,0 +1,60 @@
+<style>
+.yc_admin{
+	width: 100%;
+}
+.yc_admin {
+
+}
+</style>
+<div class="login_menu">
+	<ul style="display:inline;" >
+		<li><label>用户名:</label><input type="text" name="aname"/></li>
+		<li><label>手机号码:</label><input type="text" name="aname"/></li>
+		<li><label>密码:</label><input type="text" name="aname"/></li>
+		<li><a class="easyui-linkbutton" data-options="plain:true" href="javascript:add()">添加</a></li>
+	</ul>
+</div>
+<br/>
+<table id="show_menber" style="float:left;"></table>
+<script type="text/javascript">
+//加载数据
+$('#show_menber').datagrid({
+	url:'../../menber/find',
+	pagination:true,//分页工具条
+	pageList:[1,3,7,14,20],
+	pageSize:3,
+	pageNumber:1,
+	toolbar:[
+	         {iconCls:'icon-reload',
+	          handler:function(){
+	        	  $('yc_show_admin').datagrid('load');
+	          	}
+	         },"-",{iconCls:"icon-edit",handler:function(){
+	        	 alert("编辑");
+	         }}
+	         ],
+	columns:[[
+	   {field:'nickName',title:'会员名称',width:'15%',align:"center"},
+	   {field:'realName',title:'真实名称',width:'15%',align:"center"},
+	   {field:'pwd',title:'密码',width:'20%',formatter:function(value,row,index){
+		return "*****************";   
+	   }},
+	   {field:'tel',title:'手机号',width:'20%',align:"center"},
+	   {field:'email',title:'邮箱',width:'20%',align:"center"},
+	   {field:'status',title:'状态',width:'10%',align:"center"},
+	   /*{field:'aa',title:'操作',width:'20%',align:"center",formatter:function(value,row,index){
+		   return '<a href="javascript:resetPwd('+row.aid+')">重置密码</a>';//row为整个表的对象可以通过row.aid获取ID
+	   }}*/
+	   ]]
+});
+function resetPwd(aid){
+	alert(aid);
+}
+
+function find(){
+	var name=$('.yc_admin input[name="aname"]').val();
+	console.log(name);
+	$('#yc_show_admin').datagrid('reload',{aname:name});
+}
+$(".datagrid-toolbar").css("float","left");
+</script>
